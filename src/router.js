@@ -8,10 +8,25 @@ import Profile from '@/components/User/Profile.vue';
 import Signin from '@/components/User/Signin.vue';
 import Signup from '@/components/User/Signup.vue';
 
+const ghbasename = 'meetups-inspire';
+const testname = 'test';
+
+function getBaseURL(gdenv) {
+  let baseURL;
+  if (gdenv === 'prod') {
+    baseURL = ghbasename;
+  } else if (gdenv === 'dev') {
+    baseURL = __dirname;
+  } else {
+    baseURL = testname;
+  }
+  return baseURL;
+}
 
 Vue.use(Router);
 
 export default new Router({
+  base: getBaseURL('prod'),
   routes: [
     {
       path: '/',
