@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.d271dcd5e2bf228c6500638f2a3360da.js"
+  "/precache-manifest.0596ee7ec8e3e948b5d78f7d3d0271c4.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "dev-meetup-startup"});
