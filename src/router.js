@@ -28,6 +28,7 @@ Vue.use(Router);
 
 export default new Router({
   base: getBaseURL('prod'),
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -50,10 +51,10 @@ export default new Router({
       component: CreateMeetup,
     },
     {
-      path: '/meetups/:id',
+      path: '/meetups/:id', // add condition to check if the value is string or number
       name: 'Meetup',
-      props: true,
       component: Meetup,
+      props: true,
     },
     {
       path: '/profile',
@@ -71,5 +72,4 @@ export default new Router({
       component: Signup,
     },
   ],
-  mode: 'history',
 });

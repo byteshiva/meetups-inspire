@@ -3,6 +3,7 @@ import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 // Helpers
 import colors from 'vuetify/es5/util/colors';
+import DateFilter from '@/filters/date';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -23,6 +24,7 @@ Vue.use(Vuetify, {
     success: colors.green.lighten2,
   },
 });
+Vue.filter('date', DateFilter);
 
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
