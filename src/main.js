@@ -2,8 +2,10 @@ import Vue from 'vue';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 // Helpers
+import * as firebase from 'firebase';
 import colors from 'vuetify/es5/util/colors';
 import DateFilter from '@/filters/date';
+import AlertCmp from '@/components/shared/alert.vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -25,6 +27,7 @@ Vue.use(Vuetify, {
   },
 });
 Vue.filter('date', DateFilter);
+Vue.component('app-alert', AlertCmp);
 
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
@@ -33,6 +36,21 @@ new Vue({
   router,
   store,
   render: h => h(App),
+  created() {
+    firebase.initializeApp({
+      apiKey: 'AIzaSyDVjYQNA01NEaTWbxhcGHV5NHPP1yTTy7Y',
+      authDomain: 'v1-meetups-inspire.firebaseapp.com',
+      databaseURL: 'https://v1-meetups-inspire.firebaseio.com',
+      projectId: 'v1-meetups-inspire',
+      storageBucket: '',
+    });
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user);
+      }
+    });
+    this.$store.dispatch('loadMeetups');
+  },
 });
 
 // .$mount('#app');

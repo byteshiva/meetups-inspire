@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import AuthGuard from '@/router/auth-guard';
 import Home from '@/components/Home.vue';
 import About from '@/views/About.vue';
 import Meetups from '@/components/Meetup/Meetups.vue';
@@ -49,6 +50,7 @@ export default new Router({
       path: '/meetup/new',
       name: 'CreateMeetup',
       component: CreateMeetup,
+      beforeEnter: AuthGuard,
     },
     {
       path: '/meetups/:id', // add condition to check if the value is string or number
@@ -60,6 +62,7 @@ export default new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
+      beforeEnter: AuthGuard,
     },
     {
       path: '/signin',

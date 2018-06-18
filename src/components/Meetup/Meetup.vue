@@ -35,7 +35,7 @@ export default {
   computed: {
     meetup() {
       const obj = this;
-      const pId = parseInt(obj.id, 10);
+      const pId = obj.id;
       return this.$store.getters.loadedMeetup(pId);
     },
   },
