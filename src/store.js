@@ -57,7 +57,8 @@ export default new Vuex.Store({
         .then((data) => {
           const meetups = [];
           const obj = data.val();
-          Object.entries(obj).forEach(([key]) => {
+          // Object.entries(obj).forEach(([key]) => {
+          for (const key in obj) {
             meetups.push({
               id: key,
               title: obj[key].title,
@@ -66,7 +67,7 @@ export default new Vuex.Store({
               date: obj[key].date,
               createId: obj[key].createId,
             });
-          });
+          }
           commit('setLoadedMeetups', meetups);
           commit('setLoading', false);
         })
@@ -79,16 +80,31 @@ export default new Vuex.Store({
       const meetup = {
         title: payload.title,
         location: payload.location,
-        imageUrl: payload.imageUrl,
         description: payload.description,
         date: payload.date.toISOString(),
         createId: getters.user.id,
       };
+      let imageUrl;
+      let key;
       firebase.database().ref('meetups').push(meetup)
         .then((data) => {
-          const { key } = data;
+          key = { data };
+          return key;
+        })
+        .then((key) => {
+          const filename = payload.image.name;
+          const ext = filename.slice(filename.lastIndexOf('.'));
+          return firebase.storage().ref(`/meetups/${key}${ext}`).put(payload.image);
+        })
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then((downloadURL) => {
+          imageUrl = downloadURL;
+          return firebase.database().ref('meetups').child(key).update({ imageUrl: downloadURL });
+        })
+        .then(() => {
           commit('createMeetup', {
             ...meetup,
+            imageUrl,
             id: key,
           });
         })

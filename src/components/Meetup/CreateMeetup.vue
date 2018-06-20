@@ -2,9 +2,9 @@
     <v-container>
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-                <h4>
+                <h2>
                     Create a new Meetup
-                </h4>
+                </h2>
             </v-flex>
         </v-layout>
         <v-layout>
@@ -36,14 +36,18 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
-                            <v-text-field
-                                name="imageUrl"
-                                label="Image  URL"
-                                id="image-url"
-                                v-model="imageUrl"
-                                required
-                                >
-                            </v-text-field>
+                            <v-btn raised
+                            class="accent"
+                            @click="onPickFile"
+                            >
+                            Upload Images
+                            </v-btn>
+                            <input type="file" 
+                            style="display: none"
+                            ref="fileInput"
+                            accept="image/*"
+                            @change="onFilePicked"
+                            >
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -67,24 +71,24 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 offset-sm3>
-                            <h4>Choose a Date & Time </h4>
+                            <h2>Choose a Date & Time </h2>
                         </v-flex>
                     </v-layout>
-                    <v-layout row>
+                    <v-layout row >
                         <v-flex xs12 offset-sm3 class="mb2">
-                            <v-date-picker v-model="date" format="24hr">
+                            <v-date-picker color="green lighten-1" header-color="accent" v-model="date" format="24hr">
                             </v-date-picker>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 offset-sm3>
-                            <v-time-picker v-model="time"  format="24hr">
+                            <v-time-picker color="green lighten-1" header-color="accent" v-model="time"  format="24hr">
                             </v-time-picker>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
-                            <v-btn class="primary"
+                            <v-btn class="accent"
                                 :disabled="!formIsValid"
                                 type="submit"
                                 >
@@ -104,10 +108,11 @@ export default {
     return {
       title: '',
       location: '',
-      imageUrl: 'http://angelomincuzzi.blog.ilsole24ore.com/wp-content/uploads/sites/109/2016/06/74639365_DDD1MM_aerial_view_of_the_City_of_London_Gherkin_Cheese_Grater_and_NatWest_Tower_plus_t-xlarge_transZgEkZX3M936N5BQK4Va8RWtT0gK_6EfZT336f62E.jpg',
+      imageUrl: '',
       description: '',
       date: '',
       time: new Date(),
+      image: null,
     };
   },
   computed: {
@@ -136,15 +141,35 @@ export default {
       if (!this.formIsValid) {
         return;
       }
+      if(!this.image) {
+        return;
+      }
       const meetupData = {
         title: this.title,
         location: this.location,
-        imageUrl: this.imageUrl,
+        image: this.image,
         description: this.description,
         date: this.submittableDateTime,
+        //imageUrl: this.imageUrl,
       };
       this.$store.dispatch('createMeetup', meetupData);
       this.$router.push('/meetups');
+    },
+    onPickFile() {
+      this.$refs.fileInput.click();
+    },
+    onFilePicked(event) {
+      const files = event.target.files;
+      let filename = files[0].name;
+      if( filename.lastIndexOf('.') <= 0) {
+        return alert('Please add a valid file!');
+      }
+      const fileReader = new FileReader();
+      fileReader.addEventListener('load', () => {
+        this.imageUrl = fileReader.result;
+      })
+      fileReader.readAsDataURL(files[0]);
+      this.image = files[0];
     },
   },
 };

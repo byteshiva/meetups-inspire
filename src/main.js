@@ -42,7 +42,7 @@ new Vue({
       authDomain: 'v1-meetups-inspire.firebaseapp.com',
       databaseURL: 'https://v1-meetups-inspire.firebaseio.com',
       projectId: 'v1-meetups-inspire',
-      storageBucket: '',
+      storageBucket: 'gs://v1-meetups-inspire.appspot.com',
     });
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {

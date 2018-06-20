@@ -1,24 +1,53 @@
 <template>
   <v-app>
+    <v-navigation-drawer 
+      v-model="sideNav"
+      temporary
+      clipped
+      class="grey lighten-4"
+      app>
+      <v-list>
+        <v-list-tile 
+          v-for="item in menuItems" 
+          :key="item.title"
+          :to="item.link">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile 
+          v-if="userIsAuthenticated"
+          @click="onLogout">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>Logout</v-list-tile-content>
+        </v-list-tile>        
+      </v-list>
+    </v-navigation-drawer>
     <v-toolbar dark class="accent">
       <v-toolbar-side-icon
-      @click.stop="sideNav = !sideNav"
-      class="hidden-sm-and-up"></v-toolbar-side-icon>
+        @click.stop="sideNav = !sideNav"
+        class="hidden-sm-and-up"></v-toolbar-side-icon>
       <v-toolbar-title>
         <router-link tag="span" style="cursor:pointer" to="/">Dev Meetup
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItems" :key="item.title" :to="item.link">
+        <v-btn 
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          :to="item.link">
           <v-icon left dark>{{ item.icon }}</v-icon>
           {{ item.title }}
         </v-btn>
         <v-btn 
           v-if="userIsAuthenticated"
-          @click="onLogout"
           flat
-          >
+          @click="onLogout">
           <v-icon left dark>exit_to_app</v-icon>
           Logout
         </v-btn>
@@ -27,25 +56,6 @@
     <main>
       <router-view></router-view>
     </main>
-    <v-navigation-drawer temporary v-model="sideNav">
-      <v-list>
-        <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.link">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>{{ item.title }}</v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile 
-          v-if="userIsAuthenticated"
-          @click="onLogout"
-          >
-          <v-list-tile-action>
-            <v-icon>exit_to_app</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>Logout</v-list-tile-content>
-        </v-list-tile>        
-      </v-list>
-    </v-navigation-drawer>
   </v-app>
 </template>
 
@@ -86,5 +96,6 @@ export default {
 };
 </script>
 
+  
 <style>
 </style>
