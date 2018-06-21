@@ -42,7 +42,8 @@
                             >
                             Upload Images
                             </v-btn>
-                            <input type="file" 
+                            <input
+                            type="file"
                             style="display: none"
                             ref="fileInput"
                             accept="image/*"
@@ -52,7 +53,9 @@
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 sm6 offset-sm3>
-                            <img :src="imageUrl" height="150" alt="">
+                            <img :src="imageUrl"
+                                height="150"
+                                alt="">
                         </v-flex>
                     </v-layout>
                     <v-layout row>
@@ -76,13 +79,21 @@
                     </v-layout>
                     <v-layout row >
                         <v-flex xs12 offset-sm3 class="mb2">
-                            <v-date-picker color="green lighten-1" header-color="accent" v-model="date" format="24hr">
+                            <v-date-picker
+                            color="green lighten-1"
+                            header-color="accent"
+                            v-model="date"
+                            format="24hr">
                             </v-date-picker>
                         </v-flex>
                     </v-layout>
                     <v-layout row>
                         <v-flex xs12 offset-sm3>
-                            <v-time-picker color="green lighten-1" header-color="accent" v-model="time"  format="24hr">
+                            <v-time-picker
+                            color="green lighten-1"
+                            header-color="accent"
+                            v-model="time"
+                            format="24hr">
                             </v-time-picker>
                         </v-flex>
                     </v-layout>
@@ -141,7 +152,7 @@ export default {
       if (!this.formIsValid) {
         return;
       }
-      if(!this.image) {
+      if (!this.image) {
         return;
       }
       const meetupData = {
@@ -150,7 +161,7 @@ export default {
         image: this.image,
         description: this.description,
         date: this.submittableDateTime,
-        //imageUrl: this.imageUrl,
+        // imageUrl: this.imageUrl,
       };
       this.$store.dispatch('createMeetup', meetupData);
       this.$router.push('/meetups');
@@ -159,17 +170,19 @@ export default {
       this.$refs.fileInput.click();
     },
     onFilePicked(event) {
-      const files = event.target.files;
-      let filename = files[0].name;
-      if( filename.lastIndexOf('.') <= 0) {
-        return alert('Please add a valid file!');
+      const { target } = event;
+      const { files } = target;
+      const filename = files[0].name;
+      if (filename.lastIndexOf('.') <= 0) {
+        return 'Please add a valid file!';
       }
       const fileReader = new FileReader();
       fileReader.addEventListener('load', () => {
         this.imageUrl = fileReader.result;
-      })
+      });
       fileReader.readAsDataURL(files[0]);
       this.image = files[0];
+      return true;
     },
   },
 };

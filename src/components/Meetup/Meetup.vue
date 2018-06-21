@@ -1,6 +1,16 @@
 <template>
     <v-container>
-        <v-layout row wrap>
+        <v-layout row wrap v-if="loading">
+            <v-flex xs12 class="text-xs-center">
+                <v-progress-circular
+                    indeterminate
+                    class="accent--text"
+                    :width="7"
+                    :size="70">
+                </v-progress-circular>
+            </v-flex>
+        </v-layout>
+        <v-layout row wrap v-else>
             <v-flex xs12>
                 <v-card>
                     <v-card-title>
@@ -8,6 +18,15 @@
                            {{
                            meetup.title
                            }}</h2>
+                        <template
+                            v-if="userIsCreator">
+                            <v-spacer>
+                            </v-spacer>
+                            <app-edit-meetup-details-dialog
+                            :meetup="meetup"
+                            >
+                            </app-edit-meetup-details-dialog>
+                        </template>
                     </v-card-title>
                     <v-card-media
                             :src="meetup.imageUrl"
@@ -37,6 +56,18 @@ export default {
       const obj = this;
       const pId = obj.id;
       return this.$store.getters.loadedMeetup(pId);
+    },
+    userIsAuthenticated() {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+    },
+    userIsCreator() {
+      if (!this.userIsAuthenticated) {
+        return false;
+      }
+      return this.$store.getters.user.id === this.meetup.createId;
+    },
+    loading() {
+      return this.$store.getters.loading;
     },
   },
 };

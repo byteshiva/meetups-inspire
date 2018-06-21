@@ -6,6 +6,7 @@ import * as firebase from 'firebase';
 import colors from 'vuetify/es5/util/colors';
 import DateFilter from '@/filters/date';
 import AlertCmp from '@/components/shared/alert.vue';
+import EditMeetupDetailsDialog from '@/components/Meetup/Edit/EditMeetupDetailsDialog.vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -28,6 +29,7 @@ Vue.use(Vuetify, {
 });
 Vue.filter('date', DateFilter);
 Vue.component('app-alert', AlertCmp);
+Vue.component('app-edit-meetup-details-dialog', EditMeetupDetailsDialog);
 
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
